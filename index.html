@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tiny Farm — a small incremental farming puzzle. Plant, grow, harvest, and arrange crops for adjacency bonuses.">
+  <title>Tiny Farm — incremental farming puzzle</title>
+  <link rel="icon" type="image/png" href="assets/icons/logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <img src="assets/icons/logo.png" alt="" width="32" height="32">
+        </div>
+        <div>
+          <h1>Tiny Farm</h1>
+          <p>plant · grow · harvest</p>
+        </div>
+      </div>
+
+      <div class="hud">
+        <div class="coins" title="Your coins">
+          <img class="coin-ico header-coin" src="assets/icons/coin.png" alt="" draggable="false">
+          <b id="coins">0</b>
+        </div>
+
+        <div class="level" title="Harvest crops to earn XP. Each level adds +3% sell price.">
+          <div class="lv-row"><span>LV <b id="level">1</b></span><small id="xpText">0/16</small></div>
+          <div class="xpbar"><i id="xpFill"></i></div>
+        </div>
+
+        <button id="mute" class="icon-btn" type="button" title="Toggle sound" aria-label="Toggle sound">
+          <img id="muteIcon" src="assets/icons/sound-on.png" alt="" width="18" height="18">
+        </button>
+        <button id="reset" class="icon-btn" type="button" title="Reset game" aria-label="Reset game">
+          <img src="assets/icons/reset.png" alt="" width="18" height="18">
+        </button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card field" aria-label="Your field">
+        <div class="card-head">
+          <div class="field-heading">
+            <h2>Your field</h2>
+            <span id="harmony" class="harmony" title="Value-weighted average adjacency yield multiplier of planted crops">HARMONY ×1.00</span>
+          </div>
+          <div class="field-actions">
+            <button id="autoToggle" class="auto-toggle" type="button" aria-pressed="true" hidden title="Auto-harvester: harvests and replants ripe crops">
+              <span class="auto-led" aria-hidden="true"></span>
+              <span class="auto-label">Auto</span>
+              <b class="auto-state">ON</b>
+            </button>
+            <button id="harvestAll" class="harvest-all" type="button" disabled>Harvest all</button>
+          </div>
+        </div>
+
+        <div id="plots" class="plots"></div>
+
+        <p class="hint">Pick a seed, plant an empty plot, then harvest ripe crops. Neighbouring crops change yield.</p>
+
+        <details class="guide">
+          <summary>Field guide</summary>
+          <div class="guide-body">
+            <p class="guide-rules">
+              Every planted crop checks all eight surrounding plots, diagonals included.
+              Each same-crop neighbour <b class="neg">halves yield</b> (multiplicative).
+              Each nearby crop of a different type that is not disliked gives <b class="pos">+6%</b>;
+              a liked neighbour adds <b class="pos">+20%</b> and a disliked neighbour
+              subtracts <b class="neg">20%</b> (once each).
+              Three or more different neighbours add <b class="pos">+8%</b>.
+              Yield banks while the crop grows — the bottom-left counter is the amount
+              waiting to be harvested.
+            </p>
+            <p class="guide-note">HARMONY above the field is the value-weighted average of these multipliers.</p>
+            <div id="relations" class="relations"></div>
+          </div>
+        </details>
+      </section>
+
+      <aside class="card shop" aria-label="Shop">
+        <section>
+          <h2>Seeds</h2>
+          <div id="seeds" class="seeds"></div>
+        </section>
+        <section>
+          <h2>Upgrades</h2>
+          <div id="upgrades" class="upgrades"></div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="game.js"></script>
+</body>
+</html>
